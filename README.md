@@ -39,6 +39,7 @@ Note: Data and names used are fictional and are not representative of Waze.
 - **~18% monthly churn** in the labeled population (82/18 class split).
 - Churned users drove **~92% more km per driving day** and took **~2× more drives per driving day** — high-intensity, low-frequency use.
 - Retained users opened the app on **twice as many days** per month — habitual, low-intensity use.
+- **Activity days predicts churn monotonically**: from **38%** churn (≤5 active days) down to **4.6%** (26+ days).
 - **Device type is not a predictor**: iPhone 17.8% vs Android 17.6% churn.
 
 ## Repo structure
