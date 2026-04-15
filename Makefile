@@ -1,4 +1,4 @@
-.PHONY: lint clean report report_with_code
+.PHONY: lint clean report report_with_code executive_summary
 
 lint:
 	uv run ruff check --fix notebooks/
@@ -28,3 +28,12 @@ report_with_code:
 		--output-dir reports/ \
 		--format all \
 		--with-code
+
+# Generate only the executive summary (skips slides). Requires ANTHROPIC_API_KEY.
+executive_summary:
+	@[ -f .env ] && set -a && . ./.env && set +a; \
+	uv run --with anthropic \
+		python /workspace/tools/generate_report.py \
+		--notebook notebooks/eda.ipynb \
+		--output-dir reports/ \
+		--format summary
