@@ -49,8 +49,9 @@ data/               # source dataset
 notebooks/
 ├── eda.ipynb       # exploratory analysis
 └── utils.py        # shared helper functions
-.devcontainer/      # VS Code dev container (Python 3.12, uv, Claude Code)
-Makefile            # lint and clean targets
+reports/            # versioned generated outputs (gitignored)
+.devcontainer/      # VS Code dev container (Python 3.11, uv, Claude Code)
+Makefile            # run, lint, and report targets
 ```
 
 ## How to run
@@ -60,6 +61,25 @@ uv run --group dev jupyter lab
 ```
 
 Then open `notebooks/eda.ipynb`.
+
+## Generating reports
+
+Versioned outputs (Marp slides, HTML slides, executive summary) are written to `reports/` and gitignored.
+
+```bash
+make marp_slides       # Marp HTML + PPTX slides — no API key needed
+make report            # all outputs including executive summary (requires ANTHROPIC_API_KEY)
+make report_with_code  # same as report, but includes code cells in HTML slides
+make executive_summary # executive summary only (requires ANTHROPIC_API_KEY)
+```
+
+Provide the API key either inline or via a `.env` file (gitignored):
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-... && make report
+# or
+echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env && make report
+```
 
 ## Development
 
