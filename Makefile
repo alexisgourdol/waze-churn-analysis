@@ -1,4 +1,4 @@
-.PHONY: lint clean report report_with_code executive_summary
+.PHONY: lint clean report report_with_code executive_summary marp_slides
 
 lint:
 	uv run ruff check --fix notebooks/
@@ -14,7 +14,7 @@ clean:
 #   2. echo 'ANTHROPIC_API_KEY=sk-ant-...' > .env && make report  (.env is gitignored)
 report:
 	@[ -f .env ] && set -a && . ./.env && set +a; \
-	uv run --with anthropic --with python-pptx \
+	uv run --with anthropic --with python-pptx --with lxml --with tabulate \
 		python /workspace/tools/generate_report.py \
 		--notebook notebooks/eda.ipynb \
 		--output-dir reports/ \
@@ -22,17 +22,25 @@ report:
 
 report_with_code:
 	@[ -f .env ] && set -a && . ./.env && set +a; \
-	uv run --with anthropic --with python-pptx \
+	uv run --with anthropic --with python-pptx --with lxml --with tabulate \
 		python /workspace/tools/generate_report.py \
 		--notebook notebooks/eda.ipynb \
 		--output-dir reports/ \
 		--format all \
 		--with-code
 
+# Generate Marp slides only (HTML + PPTX). No ANTHROPIC_API_KEY needed.
+marp_slides:
+	uv run --with lxml --with tabulate \
+		python /workspace/tools/generate_report.py \
+		--notebook notebooks/eda.ipynb \
+		--output-dir reports/ \
+		--format marp
+
 # Generate only the executive summary (skips slides). Requires ANTHROPIC_API_KEY.
 executive_summary:
 	@[ -f .env ] && set -a && . ./.env && set +a; \
-	uv run --with anthropic \
+	uv run --with anthropic --with lxml --with tabulate \
 		python /workspace/tools/generate_report.py \
 		--notebook notebooks/eda.ipynb \
 		--output-dir reports/ \
