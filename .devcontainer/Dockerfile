@@ -31,34 +31,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.11-dev \
     python3-pip \
     curl \
-    libnspr4 \
-    libnss3 \
-    libdbus-1-3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libxkbcommon0 \
-    libatspi2.0-0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxfixes3 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install uv package manager
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
     && mv /root/.local/bin/uv /usr/local/bin/uv \
     && mv /root/.local/bin/uvx /usr/local/bin/uvx
-
-# Install Quarto (bundles its own Pandoc)
-ARG QUARTO_VERSION=1.9.37
-RUN curl -L --connect-timeout 30 \
-   "https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb" \
-   -o /tmp/quarto.deb \
-   && dpkg -i /tmp/quarto.deb \
-   && rm /tmp/quarto.deb
 
 # Make python3.11 the default python3
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 \
